@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ mysqlServiceName }}
+  labels:
+    name: {{ mysqlServiceName }}
+    app: bachelorarbeit
+spec:
+  ports:
+    - port: 3306
+  selector:
+    name: mysql
+    app: bachelorarbeit
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-pass
+data:
+  password: {{ mysqlRootPassword | b64encode }}
+  userpassword: {{ mysqlUserPassword | b64encode }}
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    name: mysql
+    app: bachelorarbeit
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: bachelorarbeit
+        name: mysql
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: password
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: userpassword
+        - name: MYSQL_USER
+          value: {{ usersServiceDbUsername }}
+        - name: MYSQL_DATABASE
+          value: {{ usersServiceDbName }}
+        - name: SECRET_KEY
+          value: {{ usersServiceSecretKey }}
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        hostPath:
+          path: /var/mysql-db
