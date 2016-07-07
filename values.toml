@@ -1,18 +1,21 @@
+# Users Service
 usersServiceTag = "integration-tested"
 usersServiceImage = "277555456074.dkr.ecr.eu-west-1.amazonaws.com/users-service"
 usersServiceDbName = "users"
 usersServiceSecretKey = "asdfn398v327hsdv!&%$"
 usersServiceDbUsername = "usersservice"
-mysqlUserPassword = "usersservicepass"
 userServiceEndpoint = "http://localhost:8080/api/v1/proxy/namespaces/default/services/users-service"
 
-productsServiceTag = "integration-tested"
-productsServiceImage = "277555456074.dkr.ecr.eu-west-1.amazonaws.com/products-service"
-productsServiceEndpoint = "http://products-service"
-
-webServiceTag = "integration-tested"
-webServiceImage = "277555456074.dkr.ecr.eu-west-1.amazonaws.com/web-service"
-
+mysqlUserPassword = "usersservicepass"
 mysqlRootPassword = "mysql"
 mysqlServiceName = "mysql"
-mongoDbServiceName = "mongodb"
+
+# Products Service
+productsServiceTag = "integration-tested"
+productsServiceImage = "277555456074.dkr.ecr.eu-west-1.amazonaws.com/products-service"
+productsServiceEndpoint = "http://localhost:8080/api/v1/proxy/namespaces/default/services/products-service"
+mongodbServiceName = "mongodb"
+
+# Web Service
+webServiceTag = "integration-tested"
+webServiceImage = "277555456074.dkr.ecr.eu-west-1.amazonaws.com/web-service"

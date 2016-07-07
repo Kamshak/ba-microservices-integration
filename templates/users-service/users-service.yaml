@@ -33,6 +33,7 @@ spec:
         - name: eu-west-1-ecr-registry
       containers:
       - image: {{ usersServiceImage }}:{{ usersServiceTag }}
+        imagePullPolicy: Always
         name: users-service
         ports:
         - name: u-service-port

@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: products-service
+  labels:
+    app: bachelorarbeit
+    name: products-service
+spec:
+  ports:
+    - port: 80
+      targetPort: p-service-port
+  selector:
+    app: bachelorarbeit
+    name: products-service
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: products-service-config
+  labels:
+    app: bachelorarbeit
+data:
+  production.json5: |-
+    {
+      server: {
+        port: 80,
+        cluster: true,
+        secret: "{{ usersServiceSecretKey }}",
+        mongoUrl: "mongodb://{{ mongodbServiceName }}/database"
+      },
+      logging: {
+        dir: "logs",
+        level: "debug"
+      }
+    }
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: products-service
+  labels:
+    name: products-service
+    app: bachelorarbeit
+spec:
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: bachelorarbeit
+        name: products-service
+    spec:
+      imagePullSecrets:
+        - name: eu-west-1-ecr-registry
+      containers:
+      - image: {{ productsServiceImage }}:{{ productsServiceTag }}
+        imagePullPolicy: Always
+        name: products-service
+        ports:
+        - name: p-service-port
+          containerPort: 80
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: NODE_CONFIG_DIR
+          value: /etc/products-service
+        volumeMounts:
+          - name: config-volume
+            mountPath: /etc/products-service
+      volumes:
+        - name: config-volume
+          configMap:
+            name: products-service-config
+            items:
+            - key: production.json5
+              path: production.json5
