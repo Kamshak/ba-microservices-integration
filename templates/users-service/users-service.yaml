@@ -8,6 +8,7 @@ metadata:
 spec:
   ports:
     - port: 80
+      targetPort: u-service-port
   selector:
     app: bachelorarbeit
     name: users-service
@@ -28,20 +29,20 @@ spec:
         app: bachelorarbeit
         name: users-service
     spec:
+      imagePullSecrets:
+        - name: eu-west-1-ecr-registry
       containers:
       - image: {{ usersServiceImage }}:{{ usersServiceTag }}
         name: users-service
-        imagePullSecrets:
-        - name: eu-west-1-ecr-registry
         ports:
-        - name: users-service
+        - name: u-service-port
           containerPort: 80
         env:
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
               name: mysql-pass
-              key: password
+              key: userpassword
         - name: MYSQL_USER
           value: {{ usersServiceDbUsername }}
         - name: MYSQL_DATABASE
