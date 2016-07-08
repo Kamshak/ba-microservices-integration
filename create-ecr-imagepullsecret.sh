@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Script by Nayeem Syed  https://gist.github.com/developerinlondon/da738437fe561b8f342e1e343bafbf3e
+
 #
 # Create a Kubernetes registry secret for an AWS ECR region
 # Requires AWS CLI: https://aws.amazon.com/cli/
