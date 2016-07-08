@@ -62,12 +62,18 @@ $script = <<SCRIPT
 
   # AWS Cli
   sudo pip install awscli
-  
 
   sudo su vagrant
   kubectl config set-cluster localcluster --server=http://localhost:8080
   kubectl config set-context localcluster --cluster=localcluster
   kubectl config use-context localcluster
+
+  # Node/gulp required for E2E Tests
+  curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+  apt-get install -y nodejs build-essential
+  npm install -g npm@latest
+  npm install -g gulp
+
 SCRIPT
 
 Vagrant.configure("2") do |config|
