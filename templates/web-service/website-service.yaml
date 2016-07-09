@@ -6,25 +6,13 @@ metadata:
     app: bachelorarbeit
     name: web-service
 spec:
+  type: LoadBalancer
   ports:
     - port: 80
       targetPort: w-service-port
   selector:
     app: bachelorarbeit
     name: web-service
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: service-endpoints
-  labels:
-    app: bachelorarbeit
-data:
-  endpoints.json: |-
-    {
-      "usersServiceUrl": "{{ userServiceEndpoint }}",
-      "productsServiceUrl": "{{ productsServiceEndpoint }}"
-    }
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment

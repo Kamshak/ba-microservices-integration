@@ -37,7 +37,7 @@ spec:
         name: mysql
     spec:
       containers:
-      - image: mysql:5.6
+      - image: mysql:latest
         name: mysql
         env:
         - name: MYSQL_ROOT_PASSWORD
@@ -64,5 +64,5 @@ spec:
           mountPath: /var/lib/mysql
       volumes:
       - name: mysql-persistent-storage
-        hostPath:
-          path: /var/mysql-db
+        emptyDir: {}
+          #path: /var/mysql-db

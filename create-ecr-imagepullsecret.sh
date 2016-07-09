@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Required ENV Vars:
+# AWS_REGISTRY_URL (e.g. 277555456074.dkr.ecr.eu-west-1.amazonaws.com)
+# AWS_REGION (e.g. eu-west-1)
+# optional KUBE_NAMESPACE
+KUBE_NAMESPACE=${KUBE_NAMESPACE:-default}
+
 # Script by Nayeem Syed  https://gist.github.com/developerinlondon/da738437fe561b8f342e1e343bafbf3e
 
 #
@@ -21,32 +27,23 @@
 #...
 #
 
-#
-# When Kubernetes 1.3.0+ is released this approach should not be necessary
-# This patch will allow Kubernetes to automatically cache cross-region AWS ECR tokens
-# https://github.com/kubernetes/kubernetes/pull/24369
-#
-
-ACCOUNT=277555456074
-REGION=eu-west-1
-SECRET_NAME=${REGION}-ecr-registry
-EMAIL=funk.valentin@gmail.com
+SECRET_NAME=${AWS_REGION}-ecr-registry
 
 #
 # Fetch token (which will expire in 12 hours)
 #
 
-TOKEN=`aws ecr --region=$REGION get-authorization-token --output text --query authorizationData[].authorizationToken | base64 -d | cut -d: -f2`
+TOKEN=`aws ecr --region=$AWS_REGION get-authorization-token --output text --query authorizationData[].authorizationToken | base64 -d | cut -d: -f2`
 
 #
 # Create or repleace registry secret
 #
 
-kubectl delete secret --ignore-not-found $SECRET_NAME
+kubectl delete secret --ignore-not-found $SECRET_NAME --namespace=$KUBE_NAMESPACE
 kubectl create secret docker-registry $SECRET_NAME \
- --docker-server=https://${ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com \
+ --docker-server=$AWS_REGISTRY_URL \
  --docker-username=AWS \
  --docker-password="${TOKEN}" \
- --docker-email="${EMAIL}"
+ --docker-email=none
 
 # end

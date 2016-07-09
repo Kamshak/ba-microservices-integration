@@ -1,0 +1,69 @@
+# Required Environment Variables to run this script:
+# GCLOUD_CLUSTER: Cluster to deploy the application into
+# GCLOUD_SERVICEACCOUNT_KEY: Serviceaccount JSON Key File serialized as base64 (echo file.json | base64 --wrap=0)
+# AWS_REGION: AWS Region for ECR
+# AWS_REGISTRY_URL: Registry URL for ECR without /repository suffic
+# "-D mysqlUserPassword=asdfffb234afa23kljashdflkgahs234 -D mysqlRootPassword=adfawtnw3ivuabwekfvgbawh5 -D usersServiceSecretKey=asdfjwni2u57gvuez4g5"
+
+language: node_js
+node_js:
+  - "6"
+
+services:
+  - docker
+
+cache:
+directories:
+  - /var/lib/docker
+
+before_install:
+  # Install AWS CLI
+  - npm install -g gulp bower node-gyp
+  - pip install --user awscli
+  - export PATH=$PATH:$HOME/.local/bin
+
+  # Install Jinja2 CLI
+  - git clone https://github.com/Kamshak/jinja2-cli.git
+  - pushd jinja2-cli
+  - python setup.py install
+  - popd
+  - pip install toml
+
+  # Log into GCloud
+  - gcloud components update kubectl
+  - mkdir -p /tmp/serviceaccount
+  - echo $GCLOUD_SERVICEACCOUNT_KEY | base64 -d > /tmp/serviceaccount_key.json
+  - gcloud auth activate-service-account --key-file /tmp/serviceaccount_key.json
+  - gcloud container clusters get-credentials $GCLOUD_CLUSTER
+
+  # Install deployment tool dependencies
+  - cd deployment_tool
+  - npm install
+  - cd ..
+
+  # Install End-To-End Test dependencies
+  - cd e2e
+  - npm install
+
+install:
+  # Deploy into Test Cluster
+  - export KUBE_NAMESPACE=staging
+  - ./create-ecr-imagepullsecret.sh  # Update pull secret
+  - kubectl get namespace $KUBE_NAMESPACE; if (($? > 0)); then kubectl create namespace $KUBE_NAMESPACE; fi || true # Create ns if not exists
+  - ./replace_templates.sh | node deployment-tool/index.js
+
+  # Run E2E Tests
+  - export WEB_ENDPOINT=$(kubectl get svc web-service --namespace=$KUBE_NAMESPACE -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
+  - gulp protractor
+
+
+  # Deploy into Production
+  - export KUBE_NAMESPACE=production
+  - ./create-ecr-imagepullsecret.sh  # Update pull secret
+  - kubectl get namespace $KUBE_NAMESPACE; if (($? > 0)); then kubectl create namespace $KUBE_NAMESPACE; fi || true # Create ns if not exists
+  - ./replace_templates.sh | node deployment-tool/index.js
+
+script:
+  - npm test
+  - gulp build
+  - docker build -t web-service .
