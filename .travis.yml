@@ -32,6 +32,7 @@ before_install:
 
   # Log into GCloud
   - sudo gcloud components update kubectl || true
+  - export CLOUDSDK_CORE_DISABLE_PROMPTS=1
   - curl https://sdk.cloud.google.com | sudo bash
   - export PATH=$PATH:$HOME/google-cloud-sdk/bin
   - gcloud version
