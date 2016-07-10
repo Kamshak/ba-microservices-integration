@@ -48,8 +48,8 @@ before_install:
 install:
   # Deploy into Test Cluster
   - export KUBE_NAMESPACE=staging
-  - ./create-ecr-imagepullsecret.sh  # Update pull secret
   - kubectl get namespace $KUBE_NAMESPACE; if (($? > 0)); then kubectl create namespace $KUBE_NAMESPACE; fi || true # Create ns if not exists
+  - ./create-ecr-imagepullsecret.sh  # Update pull secret
   - ./replace_templates.sh | node deployment-tool/index.js
 
   # Run E2E Tests
@@ -59,8 +59,8 @@ install:
 
   # Deploy into Production
   - export KUBE_NAMESPACE=production
-  - ./create-ecr-imagepullsecret.sh  # Update pull secret
   - kubectl get namespace $KUBE_NAMESPACE; if (($? > 0)); then kubectl create namespace $KUBE_NAMESPACE; fi || true # Create ns if not exists
+  - ./create-ecr-imagepullsecret.sh  # Update pull secret
   - ./replace_templates.sh | node deployment-tool/index.js
 
 script:
