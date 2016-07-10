@@ -34,6 +34,7 @@ before_install:
   - sudo gcloud components update kubectl || true
   - export CLOUDSDK_CORE_DISABLE_PROMPTS=1
   - curl https://sdk.cloud.google.com | sudo CLOUDSDK_CORE_DISABLE_PROMPTS=true bash
+  - sudo chmod 777 -R $HOME/google-cloud-sdk
   - export PATH=$PATH:$HOME/google-cloud-sdk/bin
   - gcloud version
   - mkdir -p /tmp/serviceaccount
