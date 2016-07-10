@@ -26,6 +26,8 @@ before_install:
   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   - git submodule update --init --recursive
 
+  - ls -lisa
+
   # Install AWS CLI
   - npm install -g gulp bower node-gyp
   - pip install --user awscli
