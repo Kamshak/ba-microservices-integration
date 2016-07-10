@@ -64,6 +64,7 @@ before_install:
   # Install End-To-End Test dependencies
   - cd e2e
   - npm install
+  - cd ..
 
 install:
   # Deploy into Test Cluster
