@@ -5,14 +5,14 @@
 # AWS_REGISTRY_URL: Registry URL for ECR without /repository suffic
 # VALUE_OVERRIDE: Overrides for Jinja2 replacing. Use to override mysql passwords and other secrets from the values.toml file. Format = -D <key>=<value> -D <key2>=<value2>
 
+sudo: false
+env:
+  - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+services:
+  - docker
 language: node_js
 node_js:
   - "6"
-sudo: false
-
-services:
-  - docker
-
 cache:
 directories:
   - /var/lib/docker
@@ -28,10 +28,13 @@ before_install:
   - pushd jinja2-cli
   - python setup.py install --user
   - popd
-  - pip install toml --user
+  - sudo pip install toml --user
 
   # Log into GCloud
-  - gcloud components update kubectl
+  - sudo gcloud components update kubectl || true
+  - curl https://sdk.cloud.google.com | bash
+  - export PATH=$PATH:$HOME/google-cloud-sdk/bin
+  - gcloud version
   - mkdir -p /tmp/serviceaccount
   - echo $GCLOUD_SERVICEACCOUNT_KEY | base64 -d > /tmp/serviceaccount_key.json
   - gcloud auth activate-service-account --key-file /tmp/serviceaccount_key.json
