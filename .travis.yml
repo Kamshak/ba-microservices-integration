@@ -32,7 +32,7 @@ before_install:
 
   # Log into GCloud
   - sudo gcloud components update kubectl || true
-  - curl https://sdk.cloud.google.com | bash
+  - curl https://sdk.cloud.google.com | sudo bash
   - export PATH=$PATH:$HOME/google-cloud-sdk/bin
   - gcloud version
   - mkdir -p /tmp/serviceaccount
