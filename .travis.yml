@@ -18,7 +18,14 @@ cache:
 directories:
   - /var/lib/docker
 
+git:
+  submodules: false
+
 before_install:
+  # Install submodules
+  - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+  - git submodule update --init --recursive
+
   # Install AWS CLI
   - npm install -g gulp bower node-gyp
   - pip install --user awscli
