@@ -33,7 +33,7 @@ before_install:
   # Log into GCloud
   - export CLOUDSDK_CORE_DISABLE_PROMPTS=1
   - curl https://sdk.cloud.google.com | sudo CLOUDSDK_CORE_DISABLE_PROMPTS=true bash
-  - export PATH=$PATH:$HOME/google-cloud-sdk/bin
+  - export PATH=$HOME/google-cloud-sdk/bin:$PATH
   - sudo gcloud components update kubectl || true
   - sudo chmod 777 -R $HOME/google-cloud-sdk
   - sudo chown -R travis:travis $HOME/google-cloud-sdk
