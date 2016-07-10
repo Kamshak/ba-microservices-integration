@@ -3,7 +3,7 @@
 # GCLOUD_SERVICEACCOUNT_KEY: Serviceaccount JSON Key File serialized as base64 (echo file.json | base64 --wrap=0)
 # AWS_REGION: AWS Region for ECR
 # AWS_REGISTRY_URL: Registry URL for ECR without /repository suffic
-# "-D mysqlUserPassword=asdfffb234afa23kljashdflkgahs234 -D mysqlRootPassword=adfawtnw3ivuabwekfvgbawh5 -D usersServiceSecretKey=asdfjwni2u57gvuez4g5"
+# VALUE_OVERRIDE: Overrides for Jinja2 replacing. Use to override mysql passwords and other secrets from the values.toml file. Format = -D <key>=<value> -D <key2>=<value2>
 
 language: node_js
 node_js:
@@ -56,14 +56,10 @@ install:
   - export WEB_ENDPOINT=$(kubectl get svc web-service --namespace=$KUBE_NAMESPACE -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
   - gulp protractor
 
-
   # Deploy into Production
   - export KUBE_NAMESPACE=production
   - kubectl get namespace $KUBE_NAMESPACE; if (($? > 0)); then kubectl create namespace $KUBE_NAMESPACE; fi || true # Create ns if not exists
   - ./create-ecr-imagepullsecret.sh  # Update pull secret
   - ./replace_templates.sh | node deployment-tool/index.js
 
-script:
-  - npm test
-  - gulp build
-  - docker build -t web-service .
+script: true
