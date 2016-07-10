@@ -44,7 +44,7 @@ before_install:
   - gcloud auth activate-service-account --key-file /tmp/serviceaccount_key.json
   - gcloud config set compute/region $GCLOUD_REGION
   - gcloud config set compute/zone $GCLOUD_ZONE
-  - gcloud config set compute/project $GCLOUD_PROJECT
+  - gcloud config set core/project $GCLOUD_PROJECT
   - gcloud container clusters get-credentials $GCLOUD_CLUSTER
 
   # Install deployment tool dependencies
