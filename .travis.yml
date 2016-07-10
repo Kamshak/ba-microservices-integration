@@ -69,8 +69,8 @@ install:
   # Deploy into Test Cluster
   - export KUBE_NAMESPACE=staging
   - kubectl get namespace $KUBE_NAMESPACE; if (($? > 0)); then kubectl create namespace $KUBE_NAMESPACE; fi || true # Create ns if not exists
-  - ./create-ecr-imagepullsecret.sh  # Update pull secret
-  - ./replace_templates.sh | node deployment-tool/index.js
+  - bash create-ecr-imagepullsecret.sh  # Update pull secret
+  - bash replace_templates.sh | node deployment-tool/index.js
 
   # Run E2E Tests
   - export WEB_ENDPOINT=$(kubectl get svc web-service --namespace=$KUBE_NAMESPACE -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
@@ -79,7 +79,7 @@ install:
   # Deploy into Production
   - export KUBE_NAMESPACE=production
   - kubectl get namespace $KUBE_NAMESPACE; if (($? > 0)); then kubectl create namespace $KUBE_NAMESPACE; fi || true # Create ns if not exists
-  - ./create-ecr-imagepullsecret.sh  # Update pull secret
-  - ./replace_templates.sh | node deployment-tool/index.js
+  - bash create-ecr-imagepullsecret.sh  # Update pull secret
+  - bash replace_templates.sh | node deployment-tool/index.js
 
 script: true
