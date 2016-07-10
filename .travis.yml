@@ -8,6 +8,7 @@
 language: node_js
 node_js:
   - "6"
+sudo: false
 
 services:
   - docker
@@ -25,9 +26,9 @@ before_install:
   # Install Jinja2 CLI
   - git clone https://github.com/Kamshak/jinja2-cli.git
   - pushd jinja2-cli
-  - python setup.py install
+  - python setup.py install --user
   - popd
-  - pip install toml
+  - pip install toml --user
 
   # Log into GCloud
   - gcloud components update kubectl
