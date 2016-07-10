@@ -55,7 +55,7 @@ before_install:
   - gcloud container clusters get-credentials $GCLOUD_CLUSTER
 
   # Install deployment tool dependencies
-  - cd deployment_tool
+  - cd deployment-tool
   - npm install
   - cd ..
 
