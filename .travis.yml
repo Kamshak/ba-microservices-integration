@@ -35,8 +35,8 @@ before_install:
   - curl https://sdk.cloud.google.com | sudo CLOUDSDK_CORE_DISABLE_PROMPTS=true bash
   - export PATH=$HOME/google-cloud-sdk/bin:$PATH
   - sudo gcloud components update kubectl || true
-  - sudo chmod 777 -R $HOME/google-cloud-sdk
-  - sudo chown -R travis:travis $HOME/google-cloud-sdk
+  - sudo chmod 777 -R /home/travis/
+  - sudo chown -R travis:travis /home/travis/
   - gcloud version
   - mkdir -p /tmp/serviceaccount
   - echo $GCLOUD_SERVICEACCOUNT_KEY | base64 -d > /tmp/serviceaccount_key.json
