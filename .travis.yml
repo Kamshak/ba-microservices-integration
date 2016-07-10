@@ -44,7 +44,7 @@ before_install:
   - export CLOUDSDK_CORE_DISABLE_PROMPTS=1
   - curl https://sdk.cloud.google.com | sudo CLOUDSDK_CORE_DISABLE_PROMPTS=true bash
   - export PATH=$HOME/google-cloud-sdk/bin:$PATH
-  - sudo PATH=/home/travis/google-cloud-sdk/bin:$PATH gcloud components update kubectl || true
+  - sudo /home/travis/google-cloud-sdk/bin/gcloud components update kubectl
   - sudo chmod 777 -R /home/travis/
   - sudo chown -R travis:travis /home/travis/
   - gcloud version
@@ -61,11 +61,6 @@ before_install:
   - npm install
   - cd ..
 
-  # Install End-To-End Test dependencies
-  - cd e2e
-  - npm install
-  - cd ..
-
 install:
   # Deploy into Test Cluster
   - export KUBE_NAMESPACE=staging
@@ -73,9 +68,14 @@ install:
   - bash create-ecr-imagepullsecret.sh  # Update pull secret
   - bash replace_templates.sh | node deployment-tool/index.js
 
+  # Install End-To-End Test dependencies
+  - cd e2e
+  - npm install
+
   # Run E2E Tests
   - export WEB_ENDPOINT=$(kubectl get svc web-service --namespace=$KUBE_NAMESPACE -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
   - gulp protractor
+  - cd ..
 
   # Deploy into Production
   - export KUBE_NAMESPACE=production
