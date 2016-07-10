@@ -1,6 +1,7 @@
 # Required Environment Variables to run this script:
 # GCLOUD_CLUSTER: Cluster to deploy the application into
 # GCLOUD_SERVICEACCOUNT_KEY: Serviceaccount JSON Key File serialized as base64 (echo file.json | base64 --wrap=0)
+# GCLOUD_REGION / GCLOUD_ZONE: Google cloud region/zone
 # AWS_REGION: AWS Region for ECR
 # AWS_REGISTRY_URL: Registry URL for ECR without /repository suffic
 # VALUE_OVERRIDE: Overrides for Jinja2 replacing. Use to override mysql passwords and other secrets from the values.toml file. Format = -D <key>=<value> -D <key2>=<value2>
@@ -33,14 +34,16 @@ before_install:
   # Log into GCloud
   - export CLOUDSDK_CORE_DISABLE_PROMPTS=1
   - curl https://sdk.cloud.google.com | sudo CLOUDSDK_CORE_DISABLE_PROMPTS=true bash
-  - export PATH=$HOME/google-cloud-sdk/bin:$PATH
-  - sudo gcloud components update kubectl || true
+  - export PATH=$HOME/google-cloud-sdk/bin:$PATH && sudo export PATH=$HOME/google-cloud-sdk/bin:$PATH
+  - sudo gcloud components install kubectl || true
   - sudo chmod 777 -R /home/travis/
   - sudo chown -R travis:travis /home/travis/
   - gcloud version
   - mkdir -p /tmp/serviceaccount
   - echo $GCLOUD_SERVICEACCOUNT_KEY | base64 -d > /tmp/serviceaccount_key.json
   - gcloud auth activate-service-account --key-file /tmp/serviceaccount_key.json
+  - gcloud config set compute/region $GCLOUD_REGION
+  - gcloud config set compute/zone $GCLOUD_ZONE
   - gcloud container clusters get-credentials $GCLOUD_CLUSTER
 
   # Install deployment tool dependencies
