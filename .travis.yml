@@ -68,13 +68,14 @@ install:
   - kubectl get namespace $KUBE_NAMESPACE; if (($? > 0)); then kubectl create namespace $KUBE_NAMESPACE; fi || true # Create ns if not exists
   - bash create-ecr-imagepullsecret.sh  # Update pull secret
   - bash replace_templates.sh | node deployment-tool/index.js
+  - bash update_service_endpoints.sh
 
   # Install End-To-End Test dependencies
   - cd e2e
   - npm install
 
   # Run E2E Tests
-  - export WEB_ENDPOINT=$(kubectl get svc web-service --namespace=$KUBE_NAMESPACE -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
+  - export WEB_ENDPOINT=http://$(kubectl get svc web-service --namespace=$KUBE_NAMESPACE -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
   - gulp protractor
   - cd ..
 
@@ -83,5 +84,12 @@ install:
   - kubectl get namespace $KUBE_NAMESPACE; if (($? > 0)); then kubectl create namespace $KUBE_NAMESPACE; fi || true # Create ns if not exists
   - bash create-ecr-imagepullsecret.sh  # Update pull secret
   - bash replace_templates.sh | node deployment-tool/index.js
+  - bash update_service_endpoints.sh
+
+  # Run E2E Again as smoke test
+  - cd e2e
+  - export WEB_ENDPOINT=http://$(kubectl get svc web-service --namespace=$KUBE_NAMESPACE -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
+  - gulp protractor
+  - cd ..
 
 script: true

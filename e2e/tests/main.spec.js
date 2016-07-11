@@ -21,6 +21,6 @@ describe('The main view', function () {
     page.setUsername('invaliduser@no.domain.com');
     page.setPassword('invalidpassword');
     page.loginButton.click();
-    expect(page.getErrr()).toEqual('Invalid credentials');
+    expect(page.getError()).toEqual('Invalid credentials');
   });
 });
