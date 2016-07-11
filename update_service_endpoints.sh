@@ -29,3 +29,4 @@ do
 done
 
 echo "Timed out waiting for endpoints update"
+exit 1
