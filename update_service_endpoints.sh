@@ -22,7 +22,7 @@ interval=1
 while ((${SECONDS} < ${end_time}))
 do
   curl -v --silent $WEB_SERVICE_ENDPOINT 2>&1 | grep -F $USERS_SERVICE_ENDPOINT
-  if (($? > 0));
+  if [ $? = 0 ];
   then
     exit 0
   fi
