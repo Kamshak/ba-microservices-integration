@@ -26,6 +26,15 @@ exports.config = {
     var caps = browser.getCapabilities()
   },
 
+  onComplete: function() {
+    var printSessionId = function(jobName){
+      browser.getSession().then(function(session) {
+        console.log('SauceOnDemandSessionID=' + session.getId() + ' job-name=' + jobName);
+      });
+    }
+    printSessionId("E2E");
+  },
+
   multiCapabilities: [{
    browserName: 'firefox',
    version: '32',
