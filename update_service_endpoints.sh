@@ -22,6 +22,7 @@ while ((${SECONDS} < ${end_time}))
 do
   curl -v --silent $WEB_SERVICE_ENDPOINT 2>&1 | grep -F $USERS_SERVICE_ENDPOINT
   sleep 1
+  echo -n "."
   if [ $? = 0 ];
   then
     exit 0
