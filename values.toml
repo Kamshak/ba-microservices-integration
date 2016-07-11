@@ -10,7 +10,7 @@ mysqlRootPassword = "mysql"
 mysqlServiceName = "mysql"
 
 # Products Service
-productsServiceTag = "integration-tested"
+productsServiceTag = "build-7"
 productsServiceImage = "277555456074.dkr.ecr.eu-west-1.amazonaws.com/products-service"
 productsServiceEndpoint = "http://localhost:8080/api/v1/proxy/namespaces/dev/services/products-service"
 mongodbServiceName = "mongodb"
