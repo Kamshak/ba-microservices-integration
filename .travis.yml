@@ -6,11 +6,9 @@
 # AWS_REGISTRY_URL: Registry URL for ECR without /repository suffic
 # AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION
 # VALUE_OVERRIDE: Overrides for Jinja2 replacing. Use to override mysql passwords and other secrets from the values.toml file. Format = -D <key>=<value> -D <key2>=<value2>
-# For E2E Selenium Testing via Sauce Labs:
+# For E2E Selenium Testing via Sauce Labs: SAUCE_USERNAME / SAUCE_ACCESS_KEY
 
-sudo: false
-env:
-  - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+sudo: required
 services:
   - docker
 language: node_js
@@ -21,7 +19,6 @@ directories:
   - /var/lib/docker
 addons:
   sauce_connect: true
-
 git:
   submodules: false
 
