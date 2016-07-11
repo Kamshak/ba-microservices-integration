@@ -3,8 +3,8 @@
 exports.config = {
   // The address of a running selenium server.
   // seleniumAddress: 'http://ondemand.saucelabs.com:80/wd/hub',
-  //sauceUser: process.env.SAUCE_USERNAME,
-  //sauceKey: process.env.SAUCE_ACCESS_KEY,
+  sauceUser: process.env.SAUCE_USERNAME,
+  sauceKey: process.env.SAUCE_ACCESS_KEY,
 
   // Spec patterns are relative to the current working directly when
   // protractor is called.
@@ -16,7 +16,7 @@ exports.config = {
     defaultTimeoutInterval: 30000
   },
 
-  /*onPrepare: function() {
+  onPrepare: function() {
     var caps = browser.getCapabilities()
   },
 
@@ -27,17 +27,12 @@ exports.config = {
       });
     }
     printSessionId("E2E");
-  },*/
-
-  // Capabilities to be passed to the webdriver instance.
-  capabilities: {
-    'browserName': 'chrome'
   },
-/*
+
   capabilities: {
     'browserName': 'chrome',
     //'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     'build': process.env.TRAVIS_BUILD_NUMBER,
     'name': 'End to End'
-  }*/
+  }
 };

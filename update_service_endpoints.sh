@@ -3,7 +3,7 @@ KUBE_NAMESPACE=${KUBE_NAMESPACE:-default}
 
 get_loadbalancer_ip () {
   SERVICENAME=$1
-  echo $(kubectl get svc $SERVICENAME --template="{{range .status.loadBalancer.ingress}}{{.ip}}{{end}}")
+  echo $(kubectl get svc $SERVICENAME --template="{{range .status.loadBalancer.ingress}}{{.ip}}{{end}}" --namespace=$KUBE_NAMESPACE)
 }
 
 USERS_SERVICE_ENDPOINT="http://$(get_loadbalancer_ip users-service)"
