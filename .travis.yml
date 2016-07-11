@@ -6,6 +6,7 @@
 # AWS_REGISTRY_URL: Registry URL for ECR without /repository suffic
 # AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION
 # VALUE_OVERRIDE: Overrides for Jinja2 replacing. Use to override mysql passwords and other secrets from the values.toml file. Format = -D <key>=<value> -D <key2>=<value2>
+# For E2E Selenium Testing via Sauce Labs: 
 
 sudo: false
 env:
