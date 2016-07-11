@@ -40,5 +40,4 @@ spec:
           mountPath: /data/db
       volumes:
       - name: mongodb-persistent-storage
-        hostPath:
-          path: /data/db
+        emptyDir: {}
