@@ -78,7 +78,7 @@ install:
   - export WEB_ENDPOINT=http://$(kubectl get svc web-service --namespace=$KUBE_NAMESPACE -o jsonpath="{.status.loadBalancer.ingress[0].ip}")
   - gulp protractor
   - cd ..
-  - rm -rf deployment-tool/deployments.txt # Remove deplyoments store of deployments that were successful to prevent rollback.sh from rolling them back
+  - rm -rf deployments.txt # Remove deplyoments store of deployments that were successful to prevent rollback.sh from rolling them back
 
   # Deploy into Production
   - export KUBE_NAMESPACE=production

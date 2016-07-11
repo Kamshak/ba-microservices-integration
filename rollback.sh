@@ -7,4 +7,4 @@ fi
 
 while IFS='' read -r line || [[ -n "$line" ]]; do
   kubectl rollout undo deployment $line --namespace=$KUBE_NAMESPACE
-done < "deployment-tool/deployments.txt"
+done < "deployments.txt"
