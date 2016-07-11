@@ -18,7 +18,7 @@ rm .tmp.json
 # Poll endpoint until it's available
 echo "Waiting for endpoints to update..."
 interval=1
-((end_time=${SECONDS}+120))
+((end_time=${SECONDS}+360))
 while ((${SECONDS} < ${end_time}))
 do
   curl -v --silent $WEB_SERVICE_ENDPOINT 2>&1 | grep -F $USERS_SERVICE_ENDPOINT
