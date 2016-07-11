@@ -3,7 +3,6 @@
 exports.config = {
   // The address of a running selenium server.
   // seleniumAddress: 'http://ondemand.saucelabs.com:80/wd/hub',
-  //seleniumServerJar: deprecated, this should be set on node_modules/protractor/config.json
   sauceUser: process.env.SAUCE_USERNAME,
   sauceKey: process.env.SAUCE_ACCESS_KEY,
 
@@ -32,7 +31,7 @@ exports.config = {
 
   capabilities: {
     'browserName': 'chrome',
-    'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+    //'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     'build': process.env.TRAVIS_BUILD_NUMBER,
     'name': 'End to End'
   }
