@@ -23,7 +23,6 @@ $script = <<SCRIPT
   mount --bind /var/lib/kubelet /var/lib/kubelet
   mount --make-shared /var/lib/kubelet
 
-  main
   # End Google Inc. Code
 
   export K8S_VERSION=$(curl -sS https://storage.googleapis.com/kubernetes-release/release/stable.txt)
@@ -74,6 +73,15 @@ $script = <<SCRIPT
   npm install -g npm@latest
   npm install -g gulp
 
+  cd vagrant
+  sudo -u vagrant -H bash -c 'git submodule update --init --recursive'
+  sudo -u vagrant -H bash -c 'cd /vagrant/deployment-tool && npm install --no-bin-links'
+
+  sudo -u vagrant -H bash -c "grep -q -F 'export AWS_REGION=eu-west-1' /home/vagrant/.bashrc || echo 'export AWS_REGION=eu-west-1' >> /home/vagrant/.bashrc"
+  sudo -u vagrant -H bash -c "grep -q -F 'export AWS_REGISTRY_URL=277555456074.dkr.ecr.eu-west-1.amazonaws.com' /home/vagrant/.bashrc || echo 'export AWS_REGISTRY_URL=277555456074.dkr.ecr.eu-west-1.amazonaws.com' >> /home/vagrant/.bashrc"
+
+  echo "Done with setup. Configure AWS CLI using aws config and execute update_service_endpoints"
+  echo "Next run ./replace_templates.sh | node deployment-tool/index.js"
 SCRIPT
 
 Vagrant.configure("2") do |config|
