@@ -69,6 +69,7 @@ install:
   - bash create-ecr-imagepullsecret.sh  # Update pull secret
   - bash replace_templates.sh | node deployment-tool/index.js
   - bash update_service_endpoints.sh
+  - sleep 2m
 
   # Install End-To-End Test dependencies
   - cd e2e
@@ -86,6 +87,7 @@ install:
   - bash create-ecr-imagepullsecret.sh  # Update pull secret
   - bash replace_templates.sh | node deployment-tool/index.js
   - bash update_service_endpoints.sh
+  - sleep 2m
 
   # Run E2E Again as smoke test
   - cd e2e
