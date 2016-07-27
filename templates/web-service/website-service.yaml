@@ -48,6 +48,12 @@ spec:
           ports:
             - name: w-service-port
               containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
           volumeMounts:
             - name: static-html
               mountPath: /usr/share/nginx/html
