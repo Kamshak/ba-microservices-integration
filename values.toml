@@ -16,5 +16,5 @@ productsServiceEndpoint = "http://localhost:8080/api/v1/proxy/namespaces/dev/ser
 mongodbServiceName = "mongodb"
 
 # Web Service
-webServiceTag = "build-13"
+webServiceTag = "build-14"
 webServiceImage = "277555456074.dkr.ecr.eu-west-1.amazonaws.com/web-service"
